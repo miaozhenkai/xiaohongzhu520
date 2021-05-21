@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div id="daojishi">
+			<p>现在是 {{msg2}}</p>
+			<p>小红猪与小白猪已经在一起 {{msg}} 啦</p>
+			<img :src="biuImgUrl"  alt="biu" />
+		</div>
+	</body>
+	<script>
+		var startDateTime = 1618675200000;
+		new Vue({
+			el: '#daojishi',
+			data: {
+				msg: '',
+				msg2:'',
+				timer: null,
+				biuImgUrl:'./img/biu.gif'
+			},
+			methods: {
+				jisuanshijian() {
+					var nowTime = new Date().getTime();
+					this.msg2 = this.formate(nowTime);
+					var distance = nowTime - startDateTime;
+					var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+					var hours = Math.floor(distance % (1000 * 60 * 60 * 24) / (1000 * 60 * 60));
+					var minutes = Math.floor(distance % (1000 * 60 * 60) / (1000 * 60));
+					var seconds = Math.floor(distance % (1000 * 60) / 1000);
+					this.msg = days + " 天 " +  hours + " 时 " + minutes + " 分 " + seconds+ " 秒 ";
+				},
+				formate(value) {
+				      let date = new Date(value);
+				      let y = date.getFullYear();
+				      let MM = date.getMonth() + 1;
+				      MM = MM < 10 ? "0" + MM : MM;
+				      let d = date.getDate();
+				      d = d < 10 ? "0" + d : d;
+				      let h = date.getHours();
+				      h = h < 10 ? "0" + h : h;
+				      let m = date.getMinutes();
+				      m = m < 10 ? "0" + m : m;
+				      let s = date.getSeconds();
+				      s = s < 10 ? "0" + s : s;
+				      return y + "-" + MM + "-" + d + " " + h + ":" + m+":"+s;
+				    }
+			},
+			mounted() {
+				this.jisuanshijian();
+				this.timer = setInterval(this.jisuanshijian, 500);
+			},
+			beforeDestroy() {
+				clearInterval(this.timer);
+			}
+		})
+	</script>
+</html>
